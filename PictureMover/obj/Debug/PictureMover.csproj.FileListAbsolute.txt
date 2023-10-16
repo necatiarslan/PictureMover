@@ -1,0 +1,11 @@
+C:\Users\necat\source\repos\PictureMover\PictureMover\bin\Debug\PictureMover.exe.config
+C:\Users\necat\source\repos\PictureMover\PictureMover\bin\Debug\PictureMover.exe
+C:\Users\necat\source\repos\PictureMover\PictureMover\bin\Debug\PictureMover.pdb
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.csproj.AssemblyReference.cache
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.csproj.SuggestedBindingRedirects.cache
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.MainForm.resources
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.Properties.Resources.resources
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.csproj.GenerateResource.cache
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.csproj.CoreCompileInputs.cache
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.exe
+C:\Users\necat\source\repos\PictureMover\PictureMover\obj\Debug\PictureMover.pdb
