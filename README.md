@@ -5,7 +5,7 @@ Picture Mover is the solution you've been looking for!
 
 This user-friendly tool empowers you to effortlessly move your media files into predefined, organized folders, helping you create a well-structured photo and video archive with ease.
 
-[Download](/app.picturemover.exe) 
+[Download](https://github.com/necatiarslan/PictureMover/raw/main/App/PictureMover.exe) 
 
 This app runs on .net framework 4.2.7. You may need to [download](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472) and install it if you dont have.
 
