@@ -13,31 +13,13 @@ namespace PictureMover
 {
     internal class FileOperation
     {
+        public static List<SourceFile> DestinationFileList = new List<SourceFile>();
         public enum DestinationFolderStructureType
         {
             Year_MonthName_Day,
             Year_MonthName,
             Year_Month_Day,
             Year_Month
-        }
-
-        public static DateTime? GetDateTaken(string filePath)
-        {
-            string fileExtension = Path.GetExtension(filePath).ToLower();
-
-            if (IsImageFile(fileExtension))
-            {
-                return ReadDateFromImage(filePath);
-            }
-            else if (IsVideoFile(fileExtension))
-            {
-                return null;
-                //return ReadDateFromVideo(filePath);
-            }
-            else
-            {
-                return null;
-            }
         }
 
         public static List<string> GetAllFilePaths(string rootFolder, List<string> filesToInclude, List<string> filesToExclude)
@@ -95,10 +77,10 @@ namespace PictureMover
             return result;
         }
 
-        public static string CopyFileToDestination(string rootFolder, string subFolder, string filePath)
+        public static string CopyFileToDestination(string rootFolder, string subFolder, SourceFile sourceFile)
         {
             string destinationDirectory = Path.Combine(rootFolder, subFolder);
-            string destinationFilePath = Path.Combine(destinationDirectory, Path.GetFileName(filePath));
+            string destinationFilePath = Path.Combine(destinationDirectory, sourceFile.FileName);
 
             // Create the subfolders if they don't exist
             Directory.CreateDirectory(destinationDirectory);
@@ -106,8 +88,8 @@ namespace PictureMover
             // Check if a file with the same name already exists in the destination folder
             if (File.Exists(destinationFilePath))
             {
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-                string fileExtension = Path.GetExtension(filePath);
+                string fileNameWithoutExtension = sourceFile.FileNameWithoutExtension;
+                string fileExtension = sourceFile.Extension;
 
                 // Generate 3 random characters to append to the file name
                 string randomChars = GenerateRandomChars(3);
@@ -119,7 +101,7 @@ namespace PictureMover
             }
 
             // Copy the file to the destination
-            File.Copy(filePath, destinationFilePath);
+            File.Copy(sourceFile.FilePath, destinationFilePath);
 
             return destinationFilePath;
         }
@@ -132,64 +114,55 @@ namespace PictureMover
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public static bool IsFileExistsInDestinationWithExtension(string rootFolder, string subFolder, string filePath)
+        public static bool IsFileExistsInDestination(string rootFolder, string subFolder, SourceFile sourceFile)
         {
-            string extension = Path.GetExtension(filePath).ToLower();
+            string extension = sourceFile.Extension;
 
             string destinationDirectory = Path.Combine(rootFolder, subFolder);
 
             if (!Directory.Exists(destinationDirectory))
             {
+                sourceFile.ExistsInDestination = false;
                 return false;
             }
 
-                // Get all files with the same extension in the destination folder and subfolders
+            if(File.Exists(Path.Combine(destinationDirectory, sourceFile.FileName)))
+            {
+                sourceFile.ExistsInDestination = true;
+                return true;
+            }
+
+            // Get all files with the same extension in the destination folder and subfolders
             string[] destinationFiles = Directory.GetFiles(destinationDirectory, "*" + extension, SearchOption.AllDirectories);
-
-            string sourceHash = CalculateFileHash(filePath);
-
+            
             foreach (string destinationFile in destinationFiles)
             {
-                string destinationHash = CalculateFileHash(destinationFile);
-
-                if (sourceHash == destinationHash)
+                if (!FileOperation.DestinationFileList.Any(file => file.FilePath == destinationFile))
                 {
-                    // File with the same extension and content exists in destination
+                    FileOperation.DestinationFileList.Add(new SourceFile(destinationFile));
+                }
+            }
+
+            foreach (SourceFile destinationFile in FileOperation.DestinationFileList)
+            {
+                if (destinationFile.Lenght == sourceFile.Lenght)
+                {
+                    sourceFile.ExistsInDestination = true;
                     return true;
                 }
             }
 
-            // No file with the same extension and content is found in the destination
-            return false;
-        }
-
-        private static string CalculateFileHash(string filePath)
-        {
-            using (var md5 = MD5.Create())
+            foreach (SourceFile destinationFile in FileOperation.DestinationFileList)
             {
-                using (var stream = File.OpenRead(filePath))
+                if (sourceFile.FileHash == destinationFile.FileHash)
                 {
-                    byte[] hashBytes = md5.ComputeHash(stream);
-                    return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                    sourceFile.ExistsInDestination = true;
+                    return true;
                 }
             }
-        }
 
-        public static bool IsThereAFileWithTheSameNameOnDestination(string rootFolder, string subFolder, string filePath)
-        {
-            string fullPath = Path.Combine(rootFolder, subFolder, Path.GetFileName(filePath));
-
-            if (File.Exists(fullPath))
-            {
-                return true;
-            }
-
+            sourceFile.ExistsInDestination = false;
             return false;
-        }
-
-        public static bool IsImageFile(string fileExtension)
-        {
-            return new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff" }.Contains(fileExtension);
         }
 
         public static bool IsMatch(string fileName, string pattern)
@@ -197,37 +170,6 @@ namespace PictureMover
             // Check if the file name matches the pattern using wildcards
             string patternRegex = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
             return Regex.IsMatch(fileName, patternRegex, RegexOptions.IgnoreCase);
-        }
-
-        public static bool IsVideoFile(string fileExtension)
-        {
-            return new[] { ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", ".m4v", ".3gp", ".mpg", ".webm" }.Contains(fileExtension);
-        }
-
-        public static DateTime ReadDateFromImage(string filePath)
-        {
-            try
-            {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                using (Image image = Image.FromStream(fs, false, false))
-                {
-                    PropertyItem propertyItem = image.GetPropertyItem(36867); // PropertyId for Date Taken
-
-                    string dateTaken = Encoding.ASCII.GetString(propertyItem.Value).Trim();
-                    return DateTime.ParseExact(dateTaken, "yyyy:MM:dd HH:mm:ss", null);
-                }
-            }
-            catch
-            {
-                // If Date Taken metadata is not available, use file creation time
-                return File.GetCreationTime(filePath);
-            }
-        }
-
-        public static DateTime ReadDateFromVideo(string filePath)
-        {
-            // For video files, use file creation time as there's no direct way to extract date taken
-            return File.GetCreationTime(filePath);
         }
     }
 }

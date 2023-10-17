@@ -37,6 +37,10 @@ namespace PictureMover
                     // Get the selected folder path
                     string selectedFolder = folderBrowser.SelectedPath;
                     SourceFolderTextBox.Text = selectedFolder;
+                    if(DestinationFolderTextBox.TextLength > 0)
+                    {
+                        DiscoverButton.PerformClick();
+                    }
                 }
             }
         }
@@ -58,6 +62,10 @@ namespace PictureMover
                     // Get the selected folder path
                     string selectedFolder = folderBrowser.SelectedPath;
                     DestinationFolderTextBox.Text = selectedFolder;
+                    if (SourceFolderTextBox.TextLength > 0)
+                    {
+                        DiscoverButton.PerformClick();
+                    }
                 }
             }
         }
@@ -65,6 +73,7 @@ namespace PictureMover
         private void DiscoverButton_Click(object sender, EventArgs e)
         {
             int filesListed = 0;
+            FileOperation.DestinationFileList.Clear();
             FileOperation.DestinationFolderStructureType destinationFolderStructureType = GetDestinationFolderStructureType();
 
             DataSet ds = DataSetUtils.CreateDataSet();
@@ -83,23 +92,23 @@ namespace PictureMover
             {
                 //DateTime? dateTaken = FileOperation.GetDateTaken(filePath);
 
-                FileInfo fileInfo = new FileInfo(filePath);
-                string destinationFolder = FileOperation.GetDestinationFolderStructure(fileInfo.LastWriteTime, destinationFolderStructureType);
+                SourceFile sourceFile = new SourceFile(filePath);
+                string destinationFolder = FileOperation.GetDestinationFolderStructure(sourceFile.FileTime, destinationFolderStructureType);
                 DataRow row = ds.Tables[0].NewRow();
                 row["FilePath"] = filePath;
-                row["FileName"] = fileInfo.Name;
-                row["Folder"] = fileInfo.DirectoryName;
-                row["Date"] = fileInfo.LastWriteTime;
-                row["DateTaken"] = DBNull.Value;
-                row["ExistsOnDestination"] = FileOperation.IsFileExistsInDestinationWithExtension(DestinationFolderTextBox.Text, destinationFolder, filePath);
+                row["FileName"] = sourceFile.FileName;
+                row["Folder"] = sourceFile.Directory;
+                row["Date"] = sourceFile.FileTime;
+                row["ExistsOnDestination"] = FileOperation.IsFileExistsInDestination(DestinationFolderTextBox.Text, destinationFolder, sourceFile);
                 row["Destination"] = destinationFolder;
                 row["DestinationFilePath"] = "";
                 row["FileCopied"] = false;
+                row["SourceFile"] = sourceFile;
 
                 ds.Tables[0].Rows.Add(row);
                 filesListed++;
 
-                FilesDataGridViewSummaryLabel.Text = "Loading File Details " + fileInfo.Name + " (" + filesListed.ToString() + "/" + allFilePaths.Count().ToString() + ")";
+                FilesDataGridViewSummaryLabel.Text = "Loading File Details " + sourceFile.FileTime + " (" + filesListed.ToString() + "/" + allFilePaths.Count().ToString() + ")";
                 Application.DoEvents();
             }
             FilesDataGridView.DataSource = ds.Tables[0];
@@ -184,7 +193,7 @@ namespace PictureMover
             {
                 if ((bool)row["ExistsOnDestination"] == false)
                 {
-                    string destinationFilePath = FileOperation.CopyFileToDestination(DestinationFolderTextBox.Text, (string)row["Destination"], (string)row["FilePath"]);
+                    string destinationFilePath = FileOperation.CopyFileToDestination(DestinationFolderTextBox.Text, (string)row["Destination"], (SourceFile)row["SourceFile"]);
                     fileCopyCount++;
                     row["FileCopied"] = true;
                     row["DestinationFilePath"] = destinationFilePath;
@@ -201,6 +210,16 @@ namespace PictureMover
         private void MainForm_Load(object sender, EventArgs e)
         {
             DestinationFormatComboBox.SelectedIndex = 0;
+        }
+
+        private void SourceFolderTextBox_Click(object sender, EventArgs e)
+        {
+            SelectSourceFolderButton.PerformClick();
+        }
+
+        private void DestinationFolderTextBox_Click(object sender, EventArgs e)
+        {
+            SelectDestinationFolderButton.PerformClick();
         }
     }
 }

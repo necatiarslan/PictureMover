@@ -44,8 +44,9 @@
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.MainTabPage = new System.Windows.Forms.TabPage();
+            this.FilesDataGridViewSummaryLabel = new System.Windows.Forms.Label();
+            this.DestinationFormatComboBox = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ExcludedFilesRadioButton = new System.Windows.Forms.RadioButton();
             this.ExistsInTheTargetRadioButton = new System.Windows.Forms.RadioButton();
             this.NotExistsInTargetRadioButton = new System.Windows.Forms.RadioButton();
             this.OptionsTabPage = new System.Windows.Forms.TabPage();
@@ -53,16 +54,15 @@
             this.IncludeTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.DestinationFormatComboBox = new System.Windows.Forms.ComboBox();
             this.FileNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SourceFolderColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DestinationFolderColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateTakenColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExistsOnDestinationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DestinationFilePathColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FileCopiedColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FilesDataGridViewSummaryLabel = new System.Windows.Forms.Label();
+            this.FolderComparisonTabPage = new System.Windows.Forms.TabPage();
+            this.DublicateFileTabPage = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.FilesDataGridView)).BeginInit();
             this.GridContextMenuStrip.SuspendLayout();
             this.MainTabControl.SuspendLayout();
@@ -95,23 +95,27 @@
             // 
             this.SourceFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.SourceFolderTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SourceFolderTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SourceFolderTextBox.Location = new System.Drawing.Point(79, 16);
             this.SourceFolderTextBox.Name = "SourceFolderTextBox";
             this.SourceFolderTextBox.ReadOnly = true;
             this.SourceFolderTextBox.Size = new System.Drawing.Size(943, 22);
             this.SourceFolderTextBox.TabIndex = 3;
+            this.SourceFolderTextBox.Click += new System.EventHandler(this.SourceFolderTextBox_Click);
             // 
             // DestinationFolderTextBox
             // 
             this.DestinationFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.DestinationFolderTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DestinationFolderTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DestinationFolderTextBox.Location = new System.Drawing.Point(79, 46);
             this.DestinationFolderTextBox.Name = "DestinationFolderTextBox";
             this.DestinationFolderTextBox.ReadOnly = true;
             this.DestinationFolderTextBox.Size = new System.Drawing.Size(943, 22);
             this.DestinationFolderTextBox.TabIndex = 4;
+            this.DestinationFolderTextBox.Click += new System.EventHandler(this.DestinationFolderTextBox_Click);
             // 
             // SelectSourceFolderButton
             // 
@@ -137,6 +141,7 @@
             // 
             // DiscoverButton
             // 
+            this.DiscoverButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DiscoverButton.Location = new System.Drawing.Point(79, 72);
             this.DiscoverButton.Name = "DiscoverButton";
             this.DiscoverButton.Size = new System.Drawing.Size(75, 23);
@@ -148,16 +153,17 @@
             // FilesDataGridView
             // 
             this.FilesDataGridView.AllowUserToAddRows = false;
+            this.FilesDataGridView.AllowUserToOrderColumns = true;
             this.FilesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilesDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.FilesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.FilesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.FileNameColumn,
             this.SourceFolderColumn,
             this.DestinationFolderColumn,
             this.DateColumn,
-            this.DateTakenColumn,
             this.ExistsOnDestinationColumn,
             this.DestinationFilePathColumn,
             this.FileCopiedColumn});
@@ -193,6 +199,7 @@
             // StartButton
             // 
             this.StartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.StartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartButton.Location = new System.Drawing.Point(980, 573);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
@@ -203,9 +210,12 @@
             // 
             // FilterTextBox
             // 
+            this.FilterTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilterTextBox.Enabled = false;
             this.FilterTextBox.Location = new System.Drawing.Point(161, 75);
             this.FilterTextBox.Name = "FilterTextBox";
-            this.FilterTextBox.Size = new System.Drawing.Size(562, 20);
+            this.FilterTextBox.Size = new System.Drawing.Size(673, 20);
             this.FilterTextBox.TabIndex = 11;
             this.FilterTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FilterTextBox_KeyDown);
             // 
@@ -216,6 +226,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainTabControl.Controls.Add(this.MainTabPage);
             this.MainTabControl.Controls.Add(this.OptionsTabPage);
+            this.MainTabControl.Controls.Add(this.FolderComparisonTabPage);
+            this.MainTabControl.Controls.Add(this.DublicateFileTabPage);
             this.MainTabControl.Location = new System.Drawing.Point(14, 12);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
@@ -245,25 +257,39 @@
             this.MainTabPage.Text = "Files";
             this.MainTabPage.UseVisualStyleBackColor = true;
             // 
+            // FilesDataGridViewSummaryLabel
+            // 
+            this.FilesDataGridViewSummaryLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.FilesDataGridViewSummaryLabel.AutoSize = true;
+            this.FilesDataGridViewSummaryLabel.Location = new System.Drawing.Point(79, 574);
+            this.FilesDataGridViewSummaryLabel.Name = "FilesDataGridViewSummaryLabel";
+            this.FilesDataGridViewSummaryLabel.Size = new System.Drawing.Size(38, 13);
+            this.FilesDataGridViewSummaryLabel.TabIndex = 14;
+            this.FilesDataGridViewSummaryLabel.Text = "Ready";
+            // 
+            // DestinationFormatComboBox
+            // 
+            this.DestinationFormatComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DestinationFormatComboBox.FormattingEnabled = true;
+            this.DestinationFormatComboBox.Items.AddRange(new object[] {
+            "2023/08-August/15/Files",
+            "2023/08-August/Files",
+            "2023/08/15/Files",
+            "2023/08/Files"});
+            this.DestinationFormatComboBox.Location = new System.Drawing.Point(840, 75);
+            this.DestinationFormatComboBox.Name = "DestinationFormatComboBox";
+            this.DestinationFormatComboBox.Size = new System.Drawing.Size(212, 21);
+            this.DestinationFormatComboBox.TabIndex = 13;
+            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.ExcludedFilesRadioButton);
             this.panel1.Controls.Add(this.ExistsInTheTargetRadioButton);
             this.panel1.Controls.Add(this.NotExistsInTargetRadioButton);
+            this.panel1.Enabled = false;
             this.panel1.Location = new System.Drawing.Point(79, 101);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(644, 26);
             this.panel1.TabIndex = 12;
-            // 
-            // ExcludedFilesRadioButton
-            // 
-            this.ExcludedFilesRadioButton.AutoSize = true;
-            this.ExcludedFilesRadioButton.Location = new System.Drawing.Point(140, 4);
-            this.ExcludedFilesRadioButton.Name = "ExcludedFilesRadioButton";
-            this.ExcludedFilesRadioButton.Size = new System.Drawing.Size(69, 17);
-            this.ExcludedFilesRadioButton.TabIndex = 2;
-            this.ExcludedFilesRadioButton.Text = "Excluded";
-            this.ExcludedFilesRadioButton.UseVisualStyleBackColor = true;
             // 
             // ExistsInTheTargetRadioButton
             // 
@@ -296,7 +322,7 @@
             this.OptionsTabPage.Location = new System.Drawing.Point(4, 22);
             this.OptionsTabPage.Name = "OptionsTabPage";
             this.OptionsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OptionsTabPage.Size = new System.Drawing.Size(729, 505);
+            this.OptionsTabPage.Size = new System.Drawing.Size(1058, 602);
             this.OptionsTabPage.TabIndex = 1;
             this.OptionsTabPage.Text = "Options";
             this.OptionsTabPage.UseVisualStyleBackColor = true;
@@ -340,19 +366,6 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Include :";
             // 
-            // DestinationFormatComboBox
-            // 
-            this.DestinationFormatComboBox.FormattingEnabled = true;
-            this.DestinationFormatComboBox.Items.AddRange(new object[] {
-            "2023/08-August/15/Files",
-            "2023/08-August/Files",
-            "2023/08/15/Files",
-            "2023/08/Files"});
-            this.DestinationFormatComboBox.Location = new System.Drawing.Point(729, 75);
-            this.DestinationFormatComboBox.Name = "DestinationFormatComboBox";
-            this.DestinationFormatComboBox.Size = new System.Drawing.Size(167, 21);
-            this.DestinationFormatComboBox.TabIndex = 13;
-            // 
             // FileNameColumn
             // 
             this.FileNameColumn.DataPropertyName = "FileName";
@@ -381,13 +394,6 @@
             this.DateColumn.Name = "DateColumn";
             this.DateColumn.ReadOnly = true;
             // 
-            // DateTakenColumn
-            // 
-            this.DateTakenColumn.DataPropertyName = "DateTaken";
-            this.DateTakenColumn.HeaderText = "DateTaken";
-            this.DateTakenColumn.Name = "DateTakenColumn";
-            this.DateTakenColumn.ReadOnly = true;
-            // 
             // ExistsOnDestinationColumn
             // 
             this.ExistsOnDestinationColumn.DataPropertyName = "ExistsOnDestination";
@@ -409,13 +415,25 @@
             this.FileCopiedColumn.Name = "FileCopiedColumn";
             this.FileCopiedColumn.ReadOnly = true;
             // 
-            // FilesDataGridViewSummaryLabel
+            // FolderComparisonTabPage
             // 
-            this.FilesDataGridViewSummaryLabel.AutoSize = true;
-            this.FilesDataGridViewSummaryLabel.Location = new System.Drawing.Point(79, 574);
-            this.FilesDataGridViewSummaryLabel.Name = "FilesDataGridViewSummaryLabel";
-            this.FilesDataGridViewSummaryLabel.Size = new System.Drawing.Size(0, 13);
-            this.FilesDataGridViewSummaryLabel.TabIndex = 14;
+            this.FolderComparisonTabPage.Location = new System.Drawing.Point(4, 22);
+            this.FolderComparisonTabPage.Name = "FolderComparisonTabPage";
+            this.FolderComparisonTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.FolderComparisonTabPage.Size = new System.Drawing.Size(1058, 602);
+            this.FolderComparisonTabPage.TabIndex = 2;
+            this.FolderComparisonTabPage.Text = "Folder Comparison";
+            this.FolderComparisonTabPage.UseVisualStyleBackColor = true;
+            // 
+            // DublicateFileTabPage
+            // 
+            this.DublicateFileTabPage.Location = new System.Drawing.Point(4, 22);
+            this.DublicateFileTabPage.Name = "DublicateFileTabPage";
+            this.DublicateFileTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.DublicateFileTabPage.Size = new System.Drawing.Size(1058, 602);
+            this.DublicateFileTabPage.TabIndex = 3;
+            this.DublicateFileTabPage.Text = "DublicateFiles";
+            this.DublicateFileTabPage.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -462,19 +480,19 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton ExcludedFilesRadioButton;
         private System.Windows.Forms.RadioButton ExistsInTheTargetRadioButton;
         private System.Windows.Forms.RadioButton NotExistsInTargetRadioButton;
         private System.Windows.Forms.ComboBox DestinationFormatComboBox;
+        private System.Windows.Forms.Label FilesDataGridViewSummaryLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileNameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SourceFolderColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DestinationFolderColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateTakenColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ExistsOnDestinationColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DestinationFilePathColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileCopiedColumn;
-        private System.Windows.Forms.Label FilesDataGridViewSummaryLabel;
+        private System.Windows.Forms.TabPage FolderComparisonTabPage;
+        private System.Windows.Forms.TabPage DublicateFileTabPage;
     }
 }
 

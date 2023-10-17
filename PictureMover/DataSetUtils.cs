@@ -21,11 +21,11 @@ namespace PictureMover
             dataTable.Columns.Add("FileName", typeof(string));
             dataTable.Columns.Add("Folder", typeof(string));
             dataTable.Columns.Add("Date", typeof(DateTime));
-            dataTable.Columns.Add("DateTaken", typeof(DateTime));
             dataTable.Columns.Add("Destination", typeof(string));
             dataTable.Columns.Add("ExistsOnDestination", typeof(bool));
             dataTable.Columns.Add("DestinationFilePath", typeof(string));
             dataTable.Columns.Add("FileCopied", typeof(bool));
+            dataTable.Columns.Add("SourceFile", typeof(SourceFile));
 
             // Add the DataTable to the DataSet
             dataSet.Tables.Add(dataTable);
