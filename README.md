@@ -19,6 +19,12 @@ https://github.com/necatiarslan/PictureMover/issues/new
 * Folder Comparison, if target folder has all source files
 * Dublicate File finder
 * App Icon
+* Error Management
+* Logging
+* Exporting Results
+* Cancel Process Button
+* Progress Bar
+* Info Tab
 
 Follow me on linkedin to get latest news \
 https://www.linkedin.com/in/necati-arslan/
