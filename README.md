@@ -25,6 +25,7 @@ https://github.com/necatiarslan/PictureMover/issues/new
 * Cancel Process Button
 * Progress Bar
 * Info Tab
+* Read DateTaken
 
 Follow me on linkedin to get latest news \
 https://www.linkedin.com/in/necati-arslan/
