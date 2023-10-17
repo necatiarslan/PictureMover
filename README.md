@@ -9,7 +9,7 @@ This user-friendly tool empowers you to effortlessly move your media files into 
 
 This app runs on .net framework 4.2.7. You may need to [download](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472) and install it if you dont have.
 
-![mainscreen](/media/picture-mover-mainscreen.jpg)
+![mainscreen](https://github.com/necatiarslan/PictureMover/raw/main/Media/picture-mover-mainscreen.JPG)
 
 ## Bug Report
 To report your bugs or request new features, use link below\
